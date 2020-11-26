@@ -64,9 +64,9 @@ sb.catplot(x="Ethnicity",y='HighRisk', kind="bar", data=RiskV)
 
 sb.catplot(x="Gender",y='HighRisk', kind="bar", data=RiskV)
 
-sb.catplot(x="Ethnicity",y='HighRisk', hue='Gender' kind="bar", data=RiskV)
+sb.catplot(x="Ethnicity",y='HighRisk', hue='Gender', kind="bar", data=RiskV)
 
-sb.catplot(x="Ethnicity",y='HighRisk', hue='Age_group' kind="bar", data=RiskV)
+sb.catplot(x="Ethnicity",y='HighRisk', hue='Age_group', kind="bar", data=RiskV)
 
 
 
