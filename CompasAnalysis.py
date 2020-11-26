@@ -27,7 +27,7 @@ import random as r
 import seaborn as sb
 import datetime as dt 
 
-Compass= pd.read_csv("C:/Users/17324/OneDrive/Documents/PythonScripts/RacialBias/CompasData.csv",encoding= 'unicode_escape')
+
 
 #consistent labeling 
 Compass['Ethnicity'] = Compass['Ethnicity'].replace('African-Am','African-American')
@@ -41,17 +41,32 @@ Compass['Birthday'] = pd.to_datetime(Compass['Birthday'])
 today = dt.date.today()
 Compass['Age'] = today.year - Compass['Birthday'].dt.year
 
-#Making Risk a binary variable where  High is 1, low, medium, and medium with override is 0. 
-Compass['HighRisk'] = Compass['RecSupervisionLevelText'].replace({'Medium with Override Consideration':0,'Medium':0,'Low':0,'High':1})
-
-RiskV= Compass[(Compass["DisplayText"] =='Risk of Violence')]
-
+#Legally Adult age data, and some ages do not make sense. Do not know if it's an error. Safer to remove. 
 Compass= Compass[Compass['Age'] > 17]
 
+#grouping ages 
 group_names = ['18-25', '26-50', '51-100']
 Compass['Age_group'] = pd.qcut(Compass['Age'], q = 3,labels = group_names)
 # Print Age_group column
 Compass[['Age_group', 'Age']]
 
+#Making Risk a binary variable where  High is 1, low, medium, and medium with override is 0. 
+Compass['HighRisk'] = Compass['RecSupervisionLevelText'].replace({'Medium with Override Consideration':0,'Medium':0,'Low':0,'High':1})
+
+#Subset of Risk of Violence Group only
+RiskV= Compass[(Compass["DisplayText"] =='Risk of Violence')]
+
+
+#Exploring Data 
 sb.catplot(x="Age_group",y='HighRisk', kind="bar", data=RiskV)
+
+sb.catplot(x="Ethnicity",y='HighRisk', kind="bar", data=RiskV)
+
+sb.catplot(x="Gender",y='HighRisk', kind="bar", data=RiskV)
+
+sb.catplot(x="Ethnicity",y='HighRisk', hue='Gender' kind="bar", data=RiskV)
+
+sb.catplot(x="Ethnicity",y='HighRisk', hue='Age_group' kind="bar", data=RiskV)
+
+
 
